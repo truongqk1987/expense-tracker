@@ -6,7 +6,8 @@
       "Bash(yarn build *)",
       "Bash(yarn lint *)",
       "Bash(git -C /Users/truongqk2302/Pets/expense-tracker rev-parse --is-inside-work-tree)",
-      "Bash(yarn vitest *)"
+      "Bash(yarn vitest *)",
+      "Bash(yarn test *)"
     ]
   }
 }

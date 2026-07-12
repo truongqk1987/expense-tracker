@@ -84,6 +84,7 @@ describe('SignUp — submission', () => {
       expect(signUp).toHaveBeenCalledWith({
         email: 'you@example.com',
         password: 'secret1',
+        options: { emailRedirectTo: `${window.location.origin}/` },
       }),
     )
     expect(navigateMock).toHaveBeenCalledWith('/', { replace: true })

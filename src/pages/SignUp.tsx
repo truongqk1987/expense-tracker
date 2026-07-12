@@ -36,6 +36,13 @@ export function SignUp() {
     const { data, error } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
+      options: {
+        // Return the user to whatever origin they signed up on (localhost,
+        // Render production, or a Render PR preview) after they confirm their
+        // email. Each confirmation email carries its own redirect, so both
+        // environments work without touching the Supabase dashboard.
+        emailRedirectTo: `${window.location.origin}/`,
+      },
     })
     if (error) {
       setAuthError(error.message)
