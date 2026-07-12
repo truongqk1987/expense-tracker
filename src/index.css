@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Flat-UI design tokens. Consumed as Tailwind utilities, e.g. bg-surface,
+   text-ink, border-line, text-brand, etc. */
+@theme {
+  /* Palette — a small, consistent set */
+  --color-brand: #4f46e5;
+  --color-brand-hover: #4338ca;
+  --color-brand-soft: #eef2ff;
+
+  --color-ink: #111827; /* primary text / headings */
+  --color-muted: #6b7280; /* secondary text */
+  --color-faint: #9ca3af; /* placeholder / hints */
+
+  --color-surface: #ffffff; /* cards / inputs */
+  --color-canvas: #f4f5f7; /* app background */
+  --color-line: #e5e7eb; /* borders / dividers */
+
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
+  --color-warning: #d97706;
+
+  /* Category accents (used for chips/dots) */
+  --color-cat-food: #f97316;
+  --color-cat-transport: #0ea5e9;
+  --color-cat-shopping: #ec4899;
+  --color-cat-bills: #8b5cf6;
+  --color-cat-entertainment: #14b8a6;
+  --color-cat-health: #ef4444;
+  --color-cat-other: #64748b;
+
+  /* Spacing / radii tokens for consistency */
+  --radius-card: 0.75rem;
+
+  --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

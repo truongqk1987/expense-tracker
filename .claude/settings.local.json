@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Bash(yarn add *)",
+      "Bash(yarn build *)",
+      "Bash(yarn lint *)",
+      "Bash(git -C /Users/truongqk2302/Pets/expense-tracker rev-parse --is-inside-work-tree)"
+    ]
+  }
+}
