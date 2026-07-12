@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: expense-tracker
+    runtime: static
+    buildCommand: yarn build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_SUPABASE_URL
+        sync: false            # set the value in the Render dashboard, never commit it
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false            # set the value in the Render dashboard, never commit it
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
