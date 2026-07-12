@@ -1,22 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { CATEGORIES, CATEGORY_VALUES } from '../../../lib/categories'
+import { CATEGORIES } from '../../../lib/categories'
 import { todayISO } from '../../../lib/format'
 import { Button } from '../../../components/ui/Button'
 import { Input, Select, Label, FieldError } from '../../../components/ui/Field'
 import type { Expense, ExpenseInput } from '../types'
+import { expenseFormSchema, type ExpenseFormValues } from './ExpenseForm.schema'
 
-const schema = z.object({
-  amount: z
-    .number({ message: 'Enter an amount' })
-    .positive('Must be greater than 0'),
-  category: z.enum(CATEGORY_VALUES),
-  spent_at: z.string().min(1, 'Pick a date'),
-  note: z.string().max(200, 'Keep it under 200 characters').optional(),
-})
-
-type FormValues = z.infer<typeof schema>
+type FormValues = ExpenseFormValues
 
 interface ExpenseFormProps {
   initial?: Expense | null
@@ -36,7 +27,7 @@ export function ExpenseForm({
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(expenseFormSchema),
     defaultValues: {
       amount: initial?.amount ?? undefined,
       category: (initial?.category as FormValues['category']) ?? 'food',

@@ -2,7 +2,7 @@ services:
   - type: web
     name: expense-tracker
     runtime: static
-    buildCommand: yarn build
+    buildCommand: yarn test && yarn build
     staticPublishPath: ./dist
     pullRequestPreviewsEnabled: true
     envVars:

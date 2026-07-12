@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1783871622540" clover="3.2.0">
+  <project timestamp="1783871622540" name="All files">
+    <metrics statements="178" coveredstatements="173" conditionals="116" coveredconditionals="109" methods="102" coveredmethods="97" elements="396" coveredelements="379" complexity="0" loc="178" ncloc="178" packages="7" files="22" classes="22"/>
+    <package name="components">
+      <metrics statements="5" coveredstatements="4" conditionals="4" coveredconditionals="4" methods="5" coveredmethods="4"/>
+      <file name="Toaster.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/components/Toaster.tsx">
+        <metrics statements="5" coveredstatements="4" conditionals="4" coveredconditionals="4" methods="5" coveredmethods="4"/>
+        <line num="4" count="31" type="stmt"/>
+        <line num="5" count="31" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.ui">
+      <metrics statements="22" coveredstatements="22" conditionals="23" coveredconditionals="20" methods="10" coveredmethods="10"/>
+      <file name="Button.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/components/ui/Button.tsx">
+        <metrics statements="4" coveredstatements="4" conditionals="8" coveredconditionals="7" methods="1" coveredmethods="1"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+        <line num="41" count="72" type="stmt"/>
+      </file>
+      <file name="Field.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/components/ui/Field.tsx">
+        <metrics statements="6" coveredstatements="6" conditionals="8" coveredconditionals="7" methods="4" coveredmethods="4"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="20" count="128" type="stmt"/>
+        <line num="28" count="104" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="38" count="94" type="stmt"/>
+        <line num="53" count="34" type="stmt"/>
+      </file>
+      <file name="Modal.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/components/ui/Modal.tsx">
+        <metrics statements="11" coveredstatements="11" conditionals="6" coveredconditionals="5" methods="4" coveredmethods="4"/>
+        <line num="11" count="10" type="stmt"/>
+        <line num="12" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="24" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="6" type="stmt"/>
+      </file>
+      <file name="Spinner.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/components/ui/Spinner.tsx">
+        <metrics statements="1" coveredstatements="1" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="2" count="13" type="stmt"/>
+      </file>
+    </package>
+    <package name="features.expenses">
+      <metrics statements="42" coveredstatements="40" conditionals="18" coveredconditionals="17" methods="22" coveredmethods="20"/>
+      <file name="api.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/api.ts">
+        <metrics statements="17" coveredstatements="17" conditionals="18" coveredconditionals="17" methods="4" coveredmethods="4"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="15" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="51" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="hooks.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/hooks.ts">
+        <metrics statements="25" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="18" coveredmethods="16"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="19" count="26" type="stmt"/>
+        <line num="23" count="83" type="stmt"/>
+        <line num="24" count="26" type="stmt"/>
+        <line num="26" count="14" type="stmt"/>
+        <line num="31" count="16" type="stmt"/>
+        <line num="32" count="16" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="48" count="6" type="stmt"/>
+        <line num="49" count="6" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="61" count="4" type="stmt"/>
+        <line num="62" count="4" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="features.expenses.components">
+      <metrics statements="62" coveredstatements="60" conditionals="61" coveredconditionals="58" methods="35" coveredmethods="33"/>
+      <file name="DeleteConfirm.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/DeleteConfirm.tsx">
+        <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="3" methods="5" coveredmethods="5"/>
+        <line num="9" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+      </file>
+      <file name="ExpenseForm.schema.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/ExpenseForm.schema.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="5" count="3" type="stmt"/>
+      </file>
+      <file name="ExpenseForm.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/ExpenseForm.tsx">
+        <metrics statements="5" coveredstatements="5" conditionals="12" coveredconditionals="12" methods="3" coveredmethods="3"/>
+        <line num="29" count="26" type="stmt"/>
+        <line num="39" count="26" type="stmt"/>
+        <line num="40" count="6" type="stmt"/>
+        <line num="48" count="26" type="stmt"/>
+        <line num="75" count="182" type="stmt"/>
+      </file>
+      <file name="ExpenseFormModal.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/ExpenseFormModal.tsx">
+        <metrics statements="11" coveredstatements="11" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
+        <line num="8" count="20" type="stmt"/>
+        <line num="9" count="20" type="stmt"/>
+        <line num="10" count="20" type="stmt"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="16" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="26" count="6" type="stmt"/>
+      </file>
+      <file name="ExpenseList.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/ExpenseList.tsx">
+        <metrics statements="8" coveredstatements="8" conditionals="16" coveredconditionals="15" methods="6" coveredmethods="6"/>
+        <line num="8" count="26" type="stmt"/>
+        <line num="9" count="83" type="stmt"/>
+        <line num="10" count="83" type="stmt"/>
+        <line num="11" count="26" type="cond" truecount="3" falsecount="0"/>
+        <line num="13" count="26" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="64" count="11" type="stmt"/>
+      </file>
+      <file name="ExpenseRow.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/ExpenseRow.tsx">
+        <metrics statements="6" coveredstatements="4" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="3"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+      </file>
+      <file name="Filters.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/Filters.tsx">
+        <metrics statements="9" coveredstatements="9" conditionals="9" coveredconditionals="9" methods="8" coveredmethods="8"/>
+        <line num="7" count="29" type="stmt"/>
+        <line num="8" count="29" type="stmt"/>
+        <line num="9" count="29" type="stmt"/>
+        <line num="10" count="8" type="cond" truecount="3" falsecount="0"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="33" count="56" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+      </file>
+      <file name="summarize.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/features/expenses/components/summarize.ts">
+        <metrics statements="15" coveredstatements="15" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="12" type="stmt"/>
+        <line num="27" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="28" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="33" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
+        <line num="39" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="lib">
+      <metrics statements="19" coveredstatements="19" conditionals="7" coveredconditionals="7" methods="7" coveredmethods="7"/>
+      <file name="categories.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/lib/categories.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="24" count="56" type="stmt"/>
+        <line num="29" count="56" type="stmt"/>
+        <line num="32" count="11" type="stmt"/>
+      </file>
+      <file name="format.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/lib/format.ts">
+        <metrics statements="15" coveredstatements="15" conditionals="5" coveredconditionals="5" methods="4" coveredmethods="4"/>
+        <line num="1" count="7" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="18" count="7" type="stmt"/>
+        <line num="19" count="7" type="cond" truecount="5" falsecount="0"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="25" count="27" type="stmt"/>
+        <line num="26" count="27" type="stmt"/>
+        <line num="27" count="27" type="stmt"/>
+        <line num="28" count="27" type="stmt"/>
+        <line num="29" count="27" type="stmt"/>
+        <line num="34" count="6" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+      </file>
+    </package>
+    <package name="stores">
+      <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="20" coveredmethods="20"/>
+      <file name="toastStore.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/stores/toastStore.ts">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="11"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="22" count="11" type="stmt"/>
+        <line num="23" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="34" count="6" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+      </file>
+      <file name="uiStore.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/stores/uiStore.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="9"/>
+        <line num="30" count="6" type="stmt"/>
+        <line num="32" count="6" type="stmt"/>
+        <line num="35" count="3" type="stmt"/>
+        <line num="36" count="3" type="stmt"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="45" count="8" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="test">
+      <metrics statements="9" coveredstatements="9" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
+      <file name="factories.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/test/factories.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="3" count="7" type="stmt"/>
+        <line num="10" count="25" type="stmt"/>
+        <line num="11" count="25" type="stmt"/>
+      </file>
+      <file name="renderWithProviders.tsx" path="/Users/truongqk2302/Pets/expense-tracker/src/test/renderWithProviders.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="12" count="13" type="stmt"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="22" count="13" type="stmt"/>
+      </file>
+      <file name="resetStores.ts" path="/Users/truongqk2302/Pets/expense-tracker/src/test/resetStores.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="10" count="6" type="stmt"/>
+        <line num="11" count="23" type="stmt"/>
+        <line num="12" count="23" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
