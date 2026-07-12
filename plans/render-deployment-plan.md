@@ -53,7 +53,7 @@ services:
     pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
-        value: "20"
+        value: "22"
       - key: VITE_SUPABASE_URL
         sync: false            # value set in dashboard, never committed to git
       - key: VITE_SUPABASE_ANON_KEY
@@ -96,7 +96,7 @@ bundle at build time, so these must exist **before** the build runs):
 |-----|-------|
 | `VITE_SUPABASE_URL` | `https://<your-project-ref>.supabase.co` |
 | `VITE_SUPABASE_ANON_KEY` | `<your-anon-public-key>` |
-| `NODE_VERSION` | `20` |
+| `NODE_VERSION` | `22` |
 
 Get the URL and anon key from **Supabase Dashboard → Project Settings → API**.
 The anon key is *designed* to ship to browsers — it is safe to expose **as long as RLS is on**
@@ -186,5 +186,5 @@ On the live Render URL:
 - **Custom domain (later):** add it under the site's **Settings → Custom Domains** and update the
   Supabase Site URL / redirect list accordingly. Not needed for the default URL.
 - **Yarn version:** Render honors `yarn.lock`. If the build fails on a Yarn/Node mismatch, pin
-  `NODE_VERSION` (already set to `20` above) and, if needed, add a `.node-version` file.
+  `NODE_VERSION` (already set to `22` above) and, if needed, add a `.node-version` file.
 ```

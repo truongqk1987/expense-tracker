@@ -7,7 +7,7 @@ services:
     pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
-        value: "20"
+        value: "22"
       - key: VITE_SUPABASE_URL
         sync: false            # set the value in the Render dashboard, never commit it
       - key: VITE_SUPABASE_ANON_KEY
