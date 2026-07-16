@@ -7,7 +7,8 @@
       "Bash(yarn lint *)",
       "Bash(git -C /Users/truongqk2302/Pets/expense-tracker rev-parse --is-inside-work-tree)",
       "Bash(yarn vitest *)",
-      "Bash(yarn test *)"
+      "Bash(yarn test *)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({...p.dependencies,...p.devDependencies},null,0\\)\\)\")"
     ]
   }
 }
