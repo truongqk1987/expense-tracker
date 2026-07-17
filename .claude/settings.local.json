@@ -8,7 +8,21 @@
       "Bash(git -C /Users/truongqk2302/Pets/expense-tracker rev-parse --is-inside-work-tree)",
       "Bash(yarn vitest *)",
       "Bash(yarn test *)",
-      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({...p.dependencies,...p.devDependencies},null,0\\)\\)\")"
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({...p.dependencies,...p.devDependencies},null,0\\)\\)\")",
+      "Bash(npx vitest *)",
+      "Bash(xargs -I{} echo {})",
+      "Bash(yarn install *)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./package.json'\\).scripts,null,2\\)\\)\")",
+      "Bash(node -e \"try{require.resolve\\('playwright'\\);console.log\\('playwright: yes'\\)}catch\\(e\\){console.log\\('playwright: no'\\)}\")",
+      "Bash(node -e \"try{require.resolve\\('playwright-core'\\);console.log\\('playwright-core: yes'\\)}catch\\(e\\){console.log\\('playwright-core: no'\\)}\")",
+      "Read(//Users/truongqk2302/Library/Caches/**)",
+      "Read(//Applications/**)",
+      "Bash(npx vite *)",
+      "Bash(echo \"started pid $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5199/verify-chart.html)",
+      "Bash(xargs kill)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5199/verify-donut.html)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('tailwind:', \\(p.devDependencies||{}\\).tailwindcss || \\(p.dependencies||{}\\).tailwindcss\\); console.log\\('container-queries plugin:', \\(p.devDependencies||{}\\)['@tailwindcss/container-queries']||'none'\\)\")"
     ]
   }
 }

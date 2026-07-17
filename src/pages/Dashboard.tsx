@@ -2,9 +2,13 @@ import { Header } from '../components/Header'
 import { useUIStore } from '../stores/uiStore'
 import { Filters } from '../features/expenses/components/Filters'
 import { SummaryCards } from '../features/expenses/components/SummaryCards'
+import { ChartsPanel } from '../features/expenses/components/ChartsPanel'
 import { ExpenseList } from '../features/expenses/components/ExpenseList'
 import { ExpenseFormModal } from '../features/expenses/components/ExpenseFormModal'
 import { DeleteConfirm } from '../features/expenses/components/DeleteConfirm'
+import { BudgetsPanel } from '../features/budgets/components/BudgetsPanel'
+import { BudgetFormModal } from '../features/budgets/components/BudgetFormModal'
+import { BudgetDeleteConfirm } from '../features/budgets/components/BudgetDeleteConfirm'
 
 export function Dashboard() {
   const openCreateForm = useUIStore((s) => s.openCreateForm)
@@ -19,9 +23,13 @@ export function Dashboard() {
           <aside className="space-y-4">
             <SummaryCards />
             <Filters />
+            <BudgetsPanel />
           </aside>
 
-          <ExpenseList />
+          <div className="space-y-6">
+            <ChartsPanel />
+            <ExpenseList />
+          </div>
         </div>
       </main>
 
@@ -38,6 +46,8 @@ export function Dashboard() {
 
       <ExpenseFormModal />
       <DeleteConfirm />
+      <BudgetFormModal />
+      <BudgetDeleteConfirm />
     </div>
   )
 }

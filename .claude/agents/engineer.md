@@ -72,6 +72,7 @@ All must pass before marking any task complete.
 ### Critical Rules
 
 **NEVER:**
+- Run `git commit`, `git push`, `git add`, or any other command that commits or stages changes. Leave all changes unstaged in the working tree for the user to review and commit themselves. Only ever commit when the user explicitly asks you to in that same request.
 - Edit a file without reading it first.
 - Call Supabase or import `api.ts` from a component — go through a hook.
 - Store server data in Zustand, or filter by `user_id` on client reads.

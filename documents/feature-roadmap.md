@@ -18,11 +18,15 @@ Let users set a monthly budget per category (or overall). `SummaryCards` already
 computes month totals — add a "spent vs. budget" progress bar.
 - **Needs:** a `budgets` table (RLS-scoped like `expenses`), a progress-bar component.
 
-### 2. Charts / spending visualization
-Today there's only a "top category" number. Add a category breakdown (donut) and a
-spend-over-time trend (bar/line).
-- **Builds on:** `summarize.ts` already groups by category — the data layer is mostly there.
-- **Note:** use the `dataviz` guidance for the color system.
+### 2. Charts / spending visualization — Shipped
+Category breakdown (donut) and spend-over-time trend (bar chart), both pure
+derivations over the existing `useExpenses()` cache — no new query, no schema
+change. See `documents/architect.md` §3/§7.
+- **Built on:** `summarize.ts`'s category grouping (extracted into shared
+  `sumByCategory()`, plus new `categoryBreakdown()`) and a new `trend.ts`
+  (mirrors `budgets/progress.ts`).
+- Colors are the existing `--color-cat-*` tokens via `getCategory` — never
+  Recharts' default palette.
 
 ### 3. CSV export / import
 Export the currently-filtered expenses to CSV (one Dashboard button, reuses the

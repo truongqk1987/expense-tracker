@@ -24,6 +24,7 @@ Level Security (RLS)**, not by application code.
 | Server state / cache | TanStack Query v5                      |
 | Client/UI state    | Zustand v5 (three stores)                |
 | Forms + validation | react-hook-form + Zod (`@hookform/resolvers`) |
+| Charts             | Recharts (`Pie`/`BarChart`) — colors driven by `--color-cat-*` CSS tokens, never Recharts defaults |
 | Backend            | Supabase (`@supabase/supabase-js`) — Auth + Postgres + RLS |
 | Testing            | Vitest + Testing Library (jsdom)         |
 | Hosting            | Render static site (see `render.yaml`)   |
@@ -63,27 +64,48 @@ src/
     AuthShell.tsx          # Shared layout/branding for auth pages
     Login.tsx              # signInWithPassword
     SignUp.tsx             # signUp (handles email-confirmation vs instant-session)
-    Dashboard.tsx          # Main authed screen: Header + Summary + Filters + List + modals
+    Dashboard.tsx          # Main authed screen: Header + Summary + Filters + Charts + List + modals
 
   components/
     Header.tsx             # App bar: add-expense, user email, sign out
     Toaster.tsx            # Renders toastStore queue
-    ui/                    # Presentational primitives: Button, Field, Modal, Spinner
+    ui/                    # Presentational primitives: Button, Field, Modal, Spinner, ProgressBar,
+                           # DonutChart, BarChart (Recharts wrappers, CSS-var colors, role="img")
 
-  features/expenses/       # The one feature domain (feature-folder pattern)
+  features/expenses/       # Feature domain #1 (feature-folder pattern)
     types.ts               # Expense (= DB row) and ExpenseInput (form payload)
     api.ts                 # Supabase CRUD: list/create/update/deleteExpense
     hooks.ts               # TanStack Query hooks: useExpenses + create/update/delete mutations
     components/
       Filters.tsx          # Category + date-range filter controls (→ uiStore)
-      SummaryCards.tsx     # Renders summarize() output
-      summarize.ts         # Pure roll-up of Expense[] → Summary
+      SummaryCards.tsx     # Renders summarize() output + the overall budget progress bar
+      summarize.ts         # Pure roll-up of Expense[] → Summary; exports monthTotalsByCategory()
+                            # (the this-month window, reused by budgets/progress.ts), sumByCategory()
+                            # (shared grouping) and categoryBreakdown() (CategorySlice[] for the donut)
+      trend.ts             # Pure bucketSpendOverTime() (contiguous zero-filled day/week/month buckets)
+                            # + resolveTrendWindow() (adaptive window/granularity); mirrors budgets/progress.ts
+      CategoryDonut.tsx    # Category breakdown donut + legend (via categoryBreakdown())
+      SpendTrend.tsx       # Spend-over-time bar chart (via bucketSpendOverTime()/resolveTrendWindow())
+      ChartsPanel.tsx      # Wraps CategoryDonut + SpendTrend; mounted above ExpenseList on Dashboard
       ExpenseList.tsx      # Query + list rendering
       ExpenseRow.tsx       # Single row + edit/delete actions
       ExpenseFormModal.tsx # Create/edit modal shell (reads uiStore.formTarget)
       ExpenseForm.tsx      # The form itself
       ExpenseForm.schema.ts# Zod schema for the expense form
       DeleteConfirm.tsx    # Delete confirmation modal (reads uiStore.deleteTarget)
+
+  features/budgets/        # Feature domain #2, mirrors expenses/
+    types.ts               # Budget (= DB row) and BudgetInput (form payload; category: null = overall)
+    api.ts                 # Supabase CRUD: list/create/update/deleteBudget
+    hooks.ts               # TanStack Query hooks: useBudgets + create/update/delete mutations
+    progress.ts            # Pure computeBudgetProgress(expenses, budgets) → spent/remaining/pct/over
+                            # per row, via monthTotalsByCategory()
+    components/
+      BudgetsPanel.tsx      # List + progress bar per budget; "Add budget" action
+      BudgetForm.tsx        # The form itself (amount + category select, '__overall__' → null)
+      BudgetForm.schema.ts  # Zod schema for the budget form
+      BudgetFormModal.tsx   # Create/edit modal shell (reads uiStore.budgetTarget)
+      BudgetDeleteConfirm.tsx # Delete confirmation modal (reads uiStore.budgetDeleteTarget)
 
   test/                    # Test infra: renderWithProviders, factories, resetStores, setup
 
@@ -142,7 +164,9 @@ insert (required by the insert policy's `with check`).
 
 ## 6. Data model & backend
 
-Single table `public.expenses` (`supabase/schema.sql`):
+Two tables in `supabase/schema.sql`, one per feature domain.
+
+**`public.expenses`**
 
 | Column       | Type            | Notes                                  |
 | ------------ | --------------- | -------------------------------------- |
@@ -156,12 +180,31 @@ Single table `public.expenses` (`supabase/schema.sql`):
 
 Index: `(user_id, spent_at desc)` for the default list ordering.
 
-**Row Level Security** is enabled with four policies (select / insert / update /
-delete), each keyed on `auth.uid() = user_id`. This is the security backbone —
-never bypass or weaken it.
+**`public.budgets`** — one recurring monthly budget per category, plus an
+optional single "overall" budget (`category is null`); always compared against
+the current calendar month, never a historical one.
+
+| Column       | Type            | Notes                                  |
+| ------------ | --------------- | -------------------------------------- |
+| `id`         | uuid PK         | `gen_random_uuid()`                    |
+| `user_id`    | uuid FK         | → `auth.users(id)`, `on delete cascade`|
+| `category`   | text nullable   | one of `categories.ts` values, or `NULL` = the overall budget |
+| `amount`     | numeric(12,2)   | `check (amount >= 0)`                   |
+| `created_at` | timestamptz     | default `now()`                        |
+
+Index: `(user_id, created_at desc)`. Two **partial unique indexes** guard
+against duplicates — because Postgres treats `NULL`s as distinct, a plain
+`unique(user_id, category)` would still allow multiple "overall" rows:
+- `(user_id, category) where category is not null` — one budget per category per user.
+- `(user_id) where category is null` — one overall budget per user.
+
+**Row Level Security** is enabled on both tables with four policies each
+(select / insert / update / delete), all keyed on `auth.uid() = user_id`. This
+is the security backbone — never bypass or weaken it.
 
 `src/lib/database.types.ts` is the generated type mirror of this schema and the
-source of truth for `Expense` (`types.ts` derives `Expense` from it).
+source of truth for `Expense` / `Budget` (each feature's `types.ts` derives its
+row type from it).
 
 ## 7. Data flow — server state (the CRUD loop)
 
@@ -178,7 +221,30 @@ Component → hooks.ts (useQuery/useMutation) → api.ts → supabase-js → Pos
   matching `api.ts` call. On success they **invalidate `['expenses']`** (all
   filter variants) and fire a success toast; on error they toast the message.
 - **Derived data**: `summarize()` is a pure function over the fetched
-  `Expense[]`; `SummaryCards` renders it. No separate query.
+  `Expense[]`; `SummaryCards` renders it. No separate query. It calls the
+  exported `monthTotalsByCategory(expenses)` helper internally to get the
+  current-month total and per-category breakdown — this is the single source
+  of the "this month" window, reused (not duplicated) by budget progress.
+
+`features/budgets/` mirrors the same loop one-to-one: `useBudgets()` (query key
+`['budgets']`, unfiltered — RLS scopes it, and the list is small) and
+`useCreateBudget` / `useUpdateBudget` / `useDeleteBudget`, each invalidating
+`['budgets']` and toasting on success/error. `createBudget` stamps `user_id` on
+insert, same as `createExpense`. `features/budgets/progress.ts` exports
+`computeBudgetProgress(expenses, budgets)`, a pure function that calls
+`monthTotalsByCategory()` to get each budget row's `spent` figure (the overall
+month total when `category` is `null`, else that category's total) and derives
+`remaining` / `pct` / `over` — rendered via `SummaryCards` (overall budget bar)
+and `BudgetsPanel` (per-category bars).
+
+`features/expenses/components/CategoryDonut.tsx` and `SpendTrend.tsx`
+(composed in `ChartsPanel.tsx`, mounted above `ExpenseList` on the Dashboard)
+are the same kind of pure derivation as `summarize()`: both read `useExpenses()`
+directly (respecting the active `uiStore` filters) and compute in `useMemo` —
+`categoryBreakdown()` for the donut, `bucketSpendOverTime()` +
+`resolveTrendWindow()` (in the new `trend.ts`, mirroring `budgets/progress.ts`)
+for the trend bar chart. No new query, no schema change, no server data enters
+Zustand.
 
 Query defaults (`QueryProvider`): `staleTime` 30s, `retry` 1, no refetch on
 window focus.
@@ -189,6 +255,11 @@ window focus.
   set `formTarget` (null = create, expense = edit) consumed by `ExpenseFormModal`;
   `requestDelete(expense)` / `cancelDelete()` drive `DeleteConfirm`; `filters` +
   `setFilters()` / `resetFilters()` drive `Filters` and feed `useExpenses`.
+  Mirrored for budgets: `openCreateBudget()` / `openEditBudget(budget)` set
+  `budgetTarget` (null = create, budget = edit) consumed by `BudgetFormModal`;
+  `requestBudgetDelete(budget)` / `cancelBudgetDelete()` drive
+  `BudgetDeleteConfirm`. No budget *filters* slice — the budget list is
+  unfiltered.
 - **`toastStore`** is a self-dismissing (3.5s) queue. Import the `toast` helper to
   notify from anywhere — including non-React code like mutation callbacks.
 - **`authStore`** is written only by `AuthProvider`; components read from it.
@@ -240,5 +311,5 @@ window focus.
 ```
 
 Key entry points to open first when planning a task: `src/App.tsx` (wiring),
-`src/features/expenses/hooks.ts` + `api.ts` (data), `supabase/schema.sql` (model
-& security), and this document.
+`src/features/expenses/hooks.ts` + `api.ts` and `src/features/budgets/hooks.ts`
++ `api.ts` (data), `supabase/schema.sql` (model & security), and this document.

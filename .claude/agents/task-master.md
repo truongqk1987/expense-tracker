@@ -99,6 +99,7 @@ Provide this structure to docs-keeper:
 
 ### What NOT to Do
 
+- Do NOT commit, stage, or push changes (`git commit` / `git add` / `git push`), and do NOT instruct any sub-agent to. Leave all changes in the working tree for the user to review and commit themselves. Only commit when the user explicitly requests it in that same request.
 - Do NOT implement code yourself — delegate to engineer.
 - Do NOT design architecture yourself — delegate to architect.
 - Do NOT skip context logging — it runs for every request.

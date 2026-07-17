@@ -1,5 +1,9 @@
 # React + TypeScript + Vite
 
+Expense Tracker: a Supabase-backed expense tracking SPA (auth, expense CRUD,
+category/date filters, budgets, and spending charts — a category breakdown
+donut and a spend-over-time trend).
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

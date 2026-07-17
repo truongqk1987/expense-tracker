@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { Expense } from '../features/expenses/types'
+import type { Budget } from '../features/budgets/types'
 
 export interface ExpenseFilters {
   category: string // '' = all
@@ -25,6 +26,19 @@ interface UIState {
   filters: ExpenseFilters
   setFilters: (patch: Partial<ExpenseFilters>) => void
   resetFilters: () => void
+
+  // Budget form modal — null when closed. `create` mode when target is
+  // undefined, `edit` mode when an existing budget is provided.
+  budgetFormOpen: boolean
+  budgetTarget: Budget | null
+  openCreateBudget: () => void
+  openEditBudget: (budget: Budget) => void
+  closeBudgetForm: () => void
+
+  // Budget delete confirmation — the budget pending deletion, or null.
+  budgetDeleteTarget: Budget | null
+  requestBudgetDelete: (budget: Budget) => void
+  cancelBudgetDelete: () => void
 }
 
 const emptyFilters: ExpenseFilters = { category: '', from: '', to: '' }
@@ -44,4 +58,15 @@ export const useUIStore = create<UIState>((set) => ({
   setFilters: (patch) =>
     set((s) => ({ filters: { ...s.filters, ...patch } })),
   resetFilters: () => set({ filters: emptyFilters }),
+
+  budgetFormOpen: false,
+  budgetTarget: null,
+  openCreateBudget: () => set({ budgetFormOpen: true, budgetTarget: null }),
+  openEditBudget: (budget) =>
+    set({ budgetFormOpen: true, budgetTarget: budget }),
+  closeBudgetForm: () => set({ budgetFormOpen: false, budgetTarget: null }),
+
+  budgetDeleteTarget: null,
+  requestBudgetDelete: (budget) => set({ budgetDeleteTarget: budget }),
+  cancelBudgetDelete: () => set({ budgetDeleteTarget: null }),
 }))
