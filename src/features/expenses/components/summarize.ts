@@ -36,23 +36,35 @@ export function sumByCategory(expenses: Expense[]): Map<string, number> {
 }
 
 /**
- * Roll expenses up into the current calendar-month window: the total spend
- * this month, and a per-category breakdown of that same window. This is the
- * single source of the "this month" roll-up — reused by `summarize()` and by
- * `features/budgets/progress.ts` so the two never drift apart.
+ * Roll expenses up into an arbitrary inclusive `[from, to]` date window: the
+ * total spend in that window, and a per-category breakdown of it. The single
+ * grouping-by-window implementation reused by `monthTotalsByCategory()` (the
+ * current-month window) and by `insights.ts` (the same-elapsed-days
+ * month-over-month windows), so they never drift apart.
  */
-export function monthTotalsByCategory(expenses: Expense[]): MonthTotals {
-  const monthStart = startOfMonthISO()
-  const today = todayISO()
-
+export function totalsInWindow(
+  expenses: Expense[],
+  from: string,
+  to: string,
+): MonthTotals {
   const inWindow = expenses.filter(
-    (e) => e.spent_at >= monthStart && e.spent_at <= today,
+    (e) => e.spent_at >= from && e.spent_at <= to,
   )
   const byCategory = sumByCategory(inWindow)
   let total = 0
   for (const amount of byCategory.values()) total += amount
 
   return { total, byCategory }
+}
+
+/**
+ * Roll expenses up into the current calendar-month window: the total spend
+ * this month, and a per-category breakdown of that same window. This is the
+ * single source of the "this month" roll-up — reused by `summarize()` and by
+ * `features/budgets/progress.ts` so the two never drift apart.
+ */
+export function monthTotalsByCategory(expenses: Expense[]): MonthTotals {
+  return totalsInWindow(expenses, startOfMonthISO(), todayISO())
 }
 
 /**

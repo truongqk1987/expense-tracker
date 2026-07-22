@@ -1,8 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  addDaysISO,
+  addMonthsISO,
+  endOfMonthOf,
   formatCurrency,
   formatDate,
   startOfMonthISO,
+  startOfMonthOf,
   todayISO,
 } from './format'
 
@@ -56,5 +60,52 @@ describe('todayISO / startOfMonthISO', () => {
 
   it('startOfMonthISO returns the first day of the current month', () => {
     expect(startOfMonthISO()).toBe('2026-01-01')
+  })
+})
+
+describe('addDaysISO', () => {
+  it('adds whole days, rolling over a month boundary', () => {
+    expect(addDaysISO('2026-01-30', 3)).toBe('2026-02-02')
+  })
+
+  it('subtracts whole days with a negative count, rolling back a year boundary', () => {
+    expect(addDaysISO('2026-01-01', -1)).toBe('2025-12-31')
+  })
+})
+
+describe('addMonthsISO', () => {
+  it('adds whole months, preserving the day-of-month', () => {
+    expect(addMonthsISO('2026-06-12', 1)).toBe('2026-07-12')
+  })
+
+  it('subtracts whole months across a year boundary', () => {
+    expect(addMonthsISO('2026-01-15', -1)).toBe('2025-12-15')
+  })
+
+  it('lets Date normalize overflow when the target month is shorter (Jan 31 - 1 month)', () => {
+    // Dec has 31 days, so this one doesn't overflow...
+    expect(addMonthsISO('2026-01-31', -1)).toBe('2025-12-31')
+    // ...but Feb (28 days in 2026) does: day 31 rolls into March.
+    expect(addMonthsISO('2026-03-31', -1)).toBe('2026-03-03')
+  })
+})
+
+describe('startOfMonthOf', () => {
+  it('returns the first day of the month containing the given date', () => {
+    expect(startOfMonthOf('2026-07-12')).toBe('2026-07-01')
+  })
+})
+
+describe('endOfMonthOf', () => {
+  it('returns the last day of a 31-day month', () => {
+    expect(endOfMonthOf('2026-07-12')).toBe('2026-07-31')
+  })
+
+  it('returns the last day of February in a non-leap year', () => {
+    expect(endOfMonthOf('2026-02-01')).toBe('2026-02-28')
+  })
+
+  it('returns the last day of February in a leap year', () => {
+    expect(endOfMonthOf('2028-02-15')).toBe('2028-02-29')
   })
 })

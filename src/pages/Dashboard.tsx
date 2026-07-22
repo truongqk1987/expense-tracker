@@ -3,6 +3,9 @@ import { useUIStore } from '../stores/uiStore'
 import { Filters } from '../features/expenses/components/Filters'
 import { SummaryCards } from '../features/expenses/components/SummaryCards'
 import { ChartsPanel } from '../features/expenses/components/ChartsPanel'
+import { InsightsPanel } from '../features/expenses/components/InsightsPanel'
+import { ExportButton } from '../features/expenses/components/ExportButton'
+import { ImportExpenses } from '../features/expenses/components/ImportExpenses'
 import { ExpenseList } from '../features/expenses/components/ExpenseList'
 import { ExpenseFormModal } from '../features/expenses/components/ExpenseFormModal'
 import { DeleteConfirm } from '../features/expenses/components/DeleteConfirm'
@@ -23,11 +26,16 @@ export function Dashboard() {
           <aside className="space-y-4">
             <SummaryCards />
             <Filters />
+            <div className="flex gap-2">
+              <ExportButton />
+              <ImportExpenses />
+            </div>
             <BudgetsPanel />
           </aside>
 
           <div className="space-y-6">
             <ChartsPanel />
+            <InsightsPanel />
             <ExpenseList />
           </div>
         </div>

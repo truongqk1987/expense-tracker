@@ -7,6 +7,7 @@ import { useUIStore, type ExpenseFilters } from '../../stores/uiStore'
 import { toast } from '../../stores/toastStore'
 import {
   createExpense,
+  createExpenses,
   deleteExpense,
   listExpenses,
   updateExpense,
@@ -39,6 +40,18 @@ export function useCreateExpense() {
     onSuccess: () => {
       invalidate()
       toast.success('Expense added')
+    },
+    onError: (e: Error) => toast.error(e.message),
+  })
+}
+
+export function useImportExpenses() {
+  const invalidate = useInvalidate()
+  return useMutation({
+    mutationFn: (inputs: ExpenseInput[]) => createExpenses(inputs),
+    onSuccess: (data) => {
+      invalidate()
+      toast.success(`Imported ${data.length} expenses`)
     },
     onError: (e: Error) => toast.error(e.message),
   })

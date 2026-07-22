@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { supabase } from '../../lib/supabase'
 import {
   createExpense,
+  createExpenses,
   deleteExpense,
   listExpenses,
   updateExpense,
@@ -128,6 +129,64 @@ describe('createExpense', () => {
     )
 
     await expect(createExpense(input)).rejects.toThrow('insert failed')
+  })
+})
+
+describe('createExpenses', () => {
+  const inputs = [
+    { amount: 10, category: 'food', note: null, spent_at: '2026-07-12' },
+    { amount: 20, category: 'transport', note: 'Bus', spent_at: '2026-07-13' },
+  ]
+
+  it('throws when there is no signed-in user', async () => {
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: null },
+    } as never)
+
+    await expect(createExpenses(inputs)).rejects.toThrow(
+      'You must be signed in.',
+    )
+  })
+
+  it('stamps user_id on every row and inserts them as a single array', async () => {
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: { id: 'user-42' } },
+    } as never)
+    const created = [
+      makeExpense({ user_id: 'user-42' }),
+      makeExpense({ user_id: 'user-42' }),
+    ]
+    const builder = makeBuilder({ data: created, error: null })
+    mockSupabase.from.mockReturnValue(builder as never)
+
+    const result = await createExpenses(inputs)
+
+    expect(builder.insert).toHaveBeenCalledWith([
+      { ...inputs[0], user_id: 'user-42' },
+      { ...inputs[1], user_id: 'user-42' },
+    ])
+    expect(result).toBe(created)
+  })
+
+  it('returns an empty array when data is null', async () => {
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: { id: 'user-42' } },
+    } as never)
+    mockSupabase.from.mockReturnValue(
+      makeBuilder({ data: null, error: null }) as never,
+    )
+    await expect(createExpenses(inputs)).resolves.toEqual([])
+  })
+
+  it('throws with the Supabase error message on insert failure', async () => {
+    mockSupabase.auth.getUser.mockResolvedValue({
+      data: { user: { id: 'user-42' } },
+    } as never)
+    mockSupabase.from.mockReturnValue(
+      makeBuilder({ data: null, error: { message: 'insert failed' } }) as never,
+    )
+
+    await expect(createExpenses(inputs)).rejects.toThrow('insert failed')
   })
 })
 
