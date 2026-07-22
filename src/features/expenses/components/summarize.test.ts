@@ -4,6 +4,7 @@ import {
   monthTotalsByCategory,
   sumByCategory,
   summarize,
+  totalsInWindow,
 } from './summarize'
 import { makeExpense } from '../../../test/factories'
 
@@ -103,6 +104,55 @@ describe('monthTotalsByCategory', () => {
     expect(summarize(expenses).monthTotal).toBe(
       monthTotalsByCategory(expenses).total,
     )
+  })
+})
+
+describe('totalsInWindow', () => {
+  it('returns a zero total and an empty map for an empty list', () => {
+    const w = totalsInWindow([], '2026-06-01', '2026-06-30')
+    expect(w.total).toBe(0)
+    expect(w.byCategory.size).toBe(0)
+  })
+
+  it('includes rows exactly on the from/to boundaries (inclusive)', () => {
+    const w = totalsInWindow(
+      [
+        makeExpense({ amount: 10, spent_at: '2026-06-01' }), // exactly `from`
+        makeExpense({ amount: 20, spent_at: '2026-06-12' }), // exactly `to`
+      ],
+      '2026-06-01',
+      '2026-06-12',
+    )
+    expect(w.total).toBe(30)
+  })
+
+  it('splits totals per category within the window', () => {
+    const w = totalsInWindow(
+      [
+        makeExpense({ category: 'food', amount: 30, spent_at: '2026-06-05' }),
+        makeExpense({ category: 'food', amount: 20, spent_at: '2026-06-06' }),
+        makeExpense({ category: 'bills', amount: 15, spent_at: '2026-06-07' }),
+      ],
+      '2026-06-01',
+      '2026-06-12',
+    )
+    expect(w.byCategory.get('food')).toBe(50)
+    expect(w.byCategory.get('bills')).toBe(15)
+    expect(w.total).toBe(65)
+  })
+
+  it('excludes rows outside [from, to] from both total and byCategory', () => {
+    const w = totalsInWindow(
+      [
+        makeExpense({ category: 'food', amount: 100, spent_at: '2026-06-05' }), // in
+        makeExpense({ category: 'food', amount: 999, spent_at: '2026-05-31' }), // out (before)
+        makeExpense({ category: 'food', amount: 999, spent_at: '2026-06-13' }), // out (after)
+      ],
+      '2026-06-01',
+      '2026-06-12',
+    )
+    expect(w.total).toBe(100)
+    expect(w.byCategory.get('food')).toBe(100)
   })
 })
 

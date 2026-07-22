@@ -37,6 +37,20 @@ export async function createExpense(input: ExpenseInput): Promise<Expense> {
   return data
 }
 
+export async function createExpenses(inputs: ExpenseInput[]): Promise<Expense[]> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('You must be signed in.')
+
+  const rows = inputs.map((input) => ({ ...input, user_id: user.id }))
+
+  const { data, error } = await supabase.from('expenses').insert(rows).select()
+
+  if (error) throw new Error(error.message)
+  return data ?? []
+}
+
 export async function updateExpense(
   id: string,
   input: ExpenseInput,

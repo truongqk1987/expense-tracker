@@ -28,10 +28,14 @@ change. See `documents/architect.md` §3/§7.
 - Colors are the existing `--color-cat-*` tokens via `getCategory` — never
   Recharts' default palette.
 
-### 3. CSV export / import
+### 3. CSV export / import — Shipped
 Export the currently-filtered expenses to CSV (one Dashboard button, reuses the
-active filter state). Import is a follow-up — parse CSV → bulk `insert`.
+active filter state) and import via parse CSV → validate per row → bulk `insert`.
 - **Value:** high real-world utility, small surface area.
+- **Built on:** generic RFC-4180 `src/lib/csv.ts`, domain mapping in
+  `features/expenses/csv.ts` (per-row `expenseFormSchema` validation, invalid
+  rows skipped + reported), `createExpenses`/`useImportExpenses`, and
+  `ExportButton`/`ImportExpenses` components.
 
 ### 4. Recurring expenses
 Mark an expense as recurring (rent, subscriptions) and auto-generate entries.
@@ -55,9 +59,14 @@ category/date filters in `uiStore`.
 `formatCurrency` is centralized, so a per-expense or per-user currency is contained.
 Optional FX conversion is a larger add-on.
 
-### 8. Dashboard insights
+### 8. Dashboard insights — Shipped
 "You spent 30% more on Food than last month," biggest expense, daily average —
 comparative analytics built on the existing month rollups.
+- **Built on:** pure `features/expenses/components/insights.ts` (mirrors
+  `trend.ts`) over the `useExpenses()` cache — month-over-month category deltas
+  vs the same-elapsed-days slice of last month, biggest single expense, and
+  daily average. Uses new `summarize.totalsInWindow()` and ISO month-math
+  helpers relocated into `lib/format.ts`. Rendered by `InsightsPanel`.
 
 ## Tier 3 — larger, differentiating
 

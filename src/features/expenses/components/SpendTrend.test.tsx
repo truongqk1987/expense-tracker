@@ -55,10 +55,12 @@ describe('SpendTrend', () => {
     ])
     renderWithProviders(<SpendTrend />)
 
-    expect(await screen.findByRole('img')).toBeInTheDocument()
-    // Rolling 30-day window ending 12 Jul is daily granularity; the axis
-    // shows a label for the bucket the expense falls into.
-    expect(screen.getByText('Jul 10')).toBeInTheDocument()
+    const img = await screen.findByRole('img')
+    // Rolling 30-day window ending 12 Jul is daily granularity; the chart's
+    // accessible label carries a bucket for the day the expense falls into.
+    // (Assert on aria-label, not a rendered XAxis tick — Recharts only lays
+    // out tick <text> when the SVG has real dimensions, which jsdom lacks.)
+    expect(img.getAttribute('aria-label')).toContain('Jul 10')
   })
 
   it('shows the unfiltered empty state when there is no data', async () => {

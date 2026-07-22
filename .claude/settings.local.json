@@ -22,7 +22,15 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5199/verify-chart.html)",
       "Bash(xargs kill)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5199/verify-donut.html)",
-      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('tailwind:', \\(p.devDependencies||{}\\).tailwindcss || \\(p.dependencies||{}\\).tailwindcss\\); console.log\\('container-queries plugin:', \\(p.devDependencies||{}\\)['@tailwindcss/container-queries']||'none'\\)\")"
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('tailwind:', \\(p.devDependencies||{}\\).tailwindcss || \\(p.dependencies||{}\\).tailwindcss\\); console.log\\('container-queries plugin:', \\(p.devDependencies||{}\\)['@tailwindcss/container-queries']||'none'\\)\")",
+      "Bash(xargs -I{} basename {})",
+      "Bash(node *)",
+      "Bash(npx tsc *)",
+      "Bash(git stash *)",
+      "Bash(yarn eslint *)",
+      "Bash(git status *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)"
     ]
   }
 }

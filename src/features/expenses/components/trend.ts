@@ -1,4 +1,10 @@
-import { todayISO } from '../../../lib/format'
+import {
+  addDaysISO,
+  addMonthsISO,
+  parseISO,
+  startOfMonthOf,
+  todayISO,
+} from '../../../lib/format'
 import type { ExpenseFilters } from '../../../stores/uiStore'
 import type { Expense } from '../types'
 
@@ -14,35 +20,9 @@ export interface TrendBucket {
 }
 
 // --- string-based ISO (YYYY-MM-DD) date helpers -----------------------------
-// Mirrors the codebase's timezone-safe convention (see lib/format.ts): never
-// hand an ISO date string straight to `new Date(iso)` (that parses as UTC
-// midnight and can drift a day in negative-UTC zones); always split into
-// numeric y/m/d first and construct a local `Date` from the parts.
-
-function parseISO(iso: string): { y: number; m: number; d: number } {
-  const [y, m, d] = iso.split('-').map(Number)
-  return { y, m, d }
-}
-
-/** Build a YYYY-MM-DD string from possibly-overflowing y/m/d parts (lets
- * `Date` normalize e.g. day 32 or month 13). */
-function toISO(y: number, m: number, d: number): string {
-  const dt = new Date(y, m - 1, d)
-  const yy = dt.getFullYear()
-  const mm = String(dt.getMonth() + 1).padStart(2, '0')
-  const dd = String(dt.getDate()).padStart(2, '0')
-  return `${yy}-${mm}-${dd}`
-}
-
-function addDaysISO(iso: string, days: number): string {
-  const { y, m, d } = parseISO(iso)
-  return toISO(y, m, d + days)
-}
-
-function addMonthsISO(iso: string, months: number): string {
-  const { y, m, d } = parseISO(iso)
-  return toISO(y, m + months, d)
-}
+// parseISO/addDaysISO/addMonthsISO/startOfMonthOf come from lib/format.ts (the
+// single source of ISO month-math); only the trend-specific helpers below
+// (week bucketing, span sizing, axis labels) live here.
 
 /** Start of the ISO week (Monday) containing the given date. */
 function startOfWeekISO(iso: string): string {
@@ -50,12 +30,6 @@ function startOfWeekISO(iso: string): string {
   const dow = new Date(y, m - 1, d).getDay() // 0 = Sun ... 6 = Sat
   const daysSinceMonday = (dow + 6) % 7
   return addDaysISO(iso, -daysSinceMonday)
-}
-
-/** Start of the calendar month containing the given date. */
-function startOfMonthOfISO(iso: string): string {
-  const { y, m } = parseISO(iso)
-  return toISO(y, m, 1)
 }
 
 /** Whole calendar days between two ISO dates (b - a), for span sizing only. */
@@ -92,7 +66,7 @@ function bucketLabel(start: string, granularity: Granularity): string {
 function periodKeyFor(granularity: Granularity): (iso: string) => string {
   if (granularity === 'day') return (iso) => iso
   if (granularity === 'week') return startOfWeekISO
-  return startOfMonthOfISO
+  return startOfMonthOf
 }
 
 function bucketStarts(
@@ -112,7 +86,7 @@ function bucketStarts(
       ? from
       : granularity === 'week'
         ? startOfWeekISO(from)
-        : startOfMonthOfISO(from)
+        : startOfMonthOf(from)
 
   const starts: string[] = []
   while (cur <= to) {
